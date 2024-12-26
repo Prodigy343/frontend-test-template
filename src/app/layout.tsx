@@ -1,12 +1,17 @@
+import { Archivo } from "next/font/google";
+import { MainHeader } from "@/components/header/MainHeader";
+import { MainFooter } from "@/components/footer/MainFooter";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
-  title: "Apply Digital Test",
-  description: "Frontend development test for Apply Digital",
+  title: "GamerShop",
+  description: "Online game store",
 };
 
 export default function RootLayout({
@@ -16,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${archivo.variable}`}>
+        <MainHeader/>
+        {children}
+        <MainFooter/>
+      </body>
     </html>
   );
 }

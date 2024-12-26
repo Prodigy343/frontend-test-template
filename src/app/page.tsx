@@ -1,7 +1,53 @@
-export default async function Home() {
+"use client";
+
+import React, { useEffect } from "react";
+import { useCartStore } from "@/store/useCartStore";
+import GameList from "@/components/gameList";
+import { Game } from "@/types/games";
+import { useGameStore } from "@/store/useGameStore";
+import { useRouter } from "next/navigation";
+
+const Home: React.FC = () => {
+  const { loadGames, loading, currentGenre, setCurrentPage, currentPage, games, error } = useGameStore();
+  const { addGame } = useCartStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    loadGames();
+  }, [loadGames])
+
+  const handleAddToCart = (game: Game) => {
+    addGame(game);
+  };
+
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    loadGames(currentGenre ?? undefined, nextPage, true);
+    router.replace(`?page=${nextPage}`);
+  };
+
+
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24 font-bold text-4xl text-blue-600'>
-      Hello, world!
-    </main>
-  )
-}
+    <div className="full-width-container">
+      <h1>Game Store</h1>
+
+      {loading && <p>Loading games...</p>}
+      {error && <p style={{ color: "red" }}>{error.message}</p>}
+      {!loading && !error && 
+        <>
+          <GameList games={games} onAddToCart={handleAddToCart}/>
+          {
+            <button
+              className="cursor-pointer font-sans font-semibold text-white bg-soft-gray rounded-lg px-6 py-5 mb-12"
+              onClick={handleLoadMore}
+            >
+              SEE MORE
+          </button>}
+        </>
+      }
+    </div>
+  );
+};
+
+export default Home;

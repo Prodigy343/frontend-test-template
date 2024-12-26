@@ -14,6 +14,7 @@ interface GameStoreState {
   error: AppError | null;
   loadGames: (genre?: string, page?: number, append?: boolean) => Promise<void>;
   setCurrentGenre: (genre: string) => void;
+  setCurrentPage: (page: number) => void;
 }
 
 export const useGameStore = create<GameStoreState>((set, get) => ({
@@ -49,5 +50,9 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
 
   setCurrentGenre: (genre: string) => {
     set({ currentGenre: genre, currentPage: 1 });
+  },
+
+  setCurrentPage: (page: number) => {
+    set({ currentPage: page });
   },
 }));

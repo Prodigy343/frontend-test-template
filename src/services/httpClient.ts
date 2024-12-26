@@ -1,5 +1,7 @@
 import { HttpClientError, HttpClientOptions } from "@/types/common";
 
+const BASE_URL = "/api";
+
 export const httpClient = async <T>(endpoint: string, options: HttpClientOptions = {}): Promise<T> => {
   const { method = "GET", headers = {}, body, queryParams } = options;
 
@@ -11,7 +13,7 @@ export const httpClient = async <T>(endpoint: string, options: HttpClientOptions
         .join("&")
     : "";
 
-  const url = `${endpoint}${queryString}`;
+  const url = `${BASE_URL}${endpoint}${queryString}`;
 
   try {
     const response = await fetch(url, {

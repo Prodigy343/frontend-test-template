@@ -2,3 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  --dark-gray-font: #585660;
+  --dark-gray-color: #404040;
+  --light-beige-color: #EEEEEE;
+  --light-white-color: #EFEDF3;
+  --white-color: #FFFFFF;
+  --light-black-color: #3B3B3B;
+  --mid-gray-color: #8F8F8F;
+}
+
+html {
+  line-height: initial;
+}
+
+body{
+  background-color: var(--white-color);
+}
+
+ul{
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.full-width-container{
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.fixed-two-columns{
+  display: flex;
+}
+
+.fixed-two-columns > *{
+  flex: 0 0 50%;
+}

@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 
 
   return (
-    <div className="full-width-container">
+    <div className="max-w-[1280px] mx-auto">
       <h1>Game Store</h1>
 
       {loading && <p>Loading games...</p>}

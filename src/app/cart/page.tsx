@@ -2,7 +2,7 @@
 
 const Cart: React.FC = () => {
   return (<>
-    <div className="full-width-container">Cart page</div>
+    <div className="max-w-[1280px] mx-auto">Cart page</div>
   </>);
 }
 

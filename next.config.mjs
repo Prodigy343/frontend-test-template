@@ -10,6 +10,8 @@ const nextConfig = {
       },
     ],
   },
+  "plugins": ["jest"],
+  "extends": ["plugin:jest/recommended"]
 };
 
 export default nextConfig;

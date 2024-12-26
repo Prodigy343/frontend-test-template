@@ -38,12 +38,15 @@ const Home: React.FC = () => {
         <>
           <GameList games={games} onAddToCart={handleAddToCart}/>
           {
-            <button
-              className="cursor-pointer font-sans font-semibold text-white bg-soft-gray rounded-lg px-6 py-5 mb-12"
-              onClick={handleLoadMore}
-            >
-              SEE MORE
-          </button>}
+            <div className="flex justify-center sm:justify-start">
+              <button
+                className="w-full max-w-[327px] sm:w-auto sm:max-w-none cursor-pointer font-sans font-semibold text-white bg-soft-gray rounded-lg px-6 py-5 mb-12"
+                onClick={handleLoadMore}
+              >
+                SEE MORE
+              </button>
+            </div>
+          }
         </>
       }
     </div>

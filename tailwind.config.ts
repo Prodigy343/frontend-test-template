@@ -8,8 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "480px",
+        sm: "768px",
+      },
       fontFamily: {
-        archivo: ['Archivo', 'sans-serif'],
+        archivo: ["Archivo", "sans-serif"],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

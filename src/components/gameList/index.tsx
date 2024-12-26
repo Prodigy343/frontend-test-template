@@ -10,7 +10,7 @@ interface GameListProps {
 const GameList: FC<GameListProps> = ({ games, onAddToCart}) => {
   return (
     <div>
-      <div className="grid grid-cols-3 gap-x-[32px] gap-y-[48px] pb-12">
+      <div className="grid place-items-center sm:place-items-start grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-[32px] gap-y-[48px] pb-12">
         {games.map((game) => (
           <GameCard key={game.id} game={game} onAddToCart={onAddToCart} />
         ))}

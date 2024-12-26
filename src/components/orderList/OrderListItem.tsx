@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FC } from "react";
 
 interface OrderListItemProps {
-  src: string;
+  image: string;
   genre: string;
   name: string;
   description?: string;
@@ -10,12 +10,12 @@ interface OrderListItemProps {
   onRemove: () => void;
 }
 
-const OrderListItem: FC<OrderListItemProps> = ({ src, genre, name, description, price, onRemove }) => {
+const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description, price, onRemove }) => {
   return (
     <div className="flex items-start gap-4 border-b border-gray-200 px-4 py-5 h-[196px]">
       <div className="border border-0 relative overflow-hidden h-[156px] w-[37%]">
         <Image
-          src={src}
+          src={image}
           alt={name}
           fill
           className="object-cover"

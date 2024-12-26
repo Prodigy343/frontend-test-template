@@ -13,7 +13,7 @@ const OrderList: FC<OrderListProps> = ({ games, handleRemove }) => {
       {games.map((game, index) => (
         <GameListItem
           key={index}
-          src={game.image}
+          image={game.image}
           genre={game.genre}
           name={game.name}
           description={game.description}

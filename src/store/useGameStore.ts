@@ -17,6 +17,7 @@ interface GameStoreState {
   loadGames: (genre?: string, page?: number, append?: boolean) => Promise<void>;
   setCurrentGenre: (genre: string) => void;
   setCurrentPage: (page: number) => void;
+  setFilters: (genre: string, page: number) => void;
 }
 
 export const useGameStore = create<GameStoreState>((set, get) => ({
@@ -35,10 +36,11 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       let allGames: Game[] = [];
       let response: GamesResponse;
       let currentGenre: string = genre;
+      let i;
 
       if(currentGenre === allFilter) currentGenre = '';
 
-      for(let i=1 ; i<=page ; i++){
+      for(i=1 ; i<=page ; i++){
         response = await fetchGames(currentGenre, i);
         if(i > response.totalPages)break;
         allGames = [...allGames, ...response.games];
@@ -49,7 +51,7 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         games: allGames,
         availableFilters: [allFilter, ...response.availableFilters],
         currentGenre: genre,
-        currentPage: page,
+        currentPage: i > response.totalPages ? response.totalPages : page,
         totalPages: response.totalPages,
       }));
     } catch (err) {
@@ -89,5 +91,9 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
 
   setCurrentPage: (page: number) => {
     set({ currentPage: page });
+  },
+
+  setFilters(genre, page) {
+    set({ currentGenre: genre, currentPage: page });
   },
 }));

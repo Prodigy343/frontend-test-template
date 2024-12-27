@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@/components/loading";
 import { FilterDropdown } from "@/components/filterDropdown";
 import { filterFormatter, urlFormatter } from "@/utils/urlFormatter";
+import { allFilter } from "@/static/filters";
 
 const Home = () => {
   const { 
@@ -19,6 +20,7 @@ const Home = () => {
     availableFilters, 
     setCurrentGenre, 
     setCurrentPage, 
+    setFilters,
     currentPage, 
     totalPages,
     games, 
@@ -31,20 +33,24 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const filter = filterFormatter(Array.from(searchParams.entries()));
-
-      if (!firstLoad && (filter.page !== 0 || filter.genre !== "")) {
+      let filter = filterFormatter(Array.from(searchParams.entries()));
+      
+      if(!firstLoad && window.location.search.length > 0){
         setFirstLoad(true);
         await initialLoad(filter.genre, filter.page);
-      } else if (filter.genre !== currentGenre || filter.page !== currentPage) {
+      }else if(window.location.search.length === 0){
+        const newUrl = urlFormatter({ currentRoute: window.location.search, page: 1, genre: allFilter });
+        router.replace(newUrl);
+        setFirstLoad(true);
+        await initialLoad(currentGenre, currentPage);
+      } else if(filter.genre !== currentGenre || filter.page !== currentPage) {
         setFirstLoad(true);
         await loadGames(currentGenre, currentPage, currentPage !== 1);
       }
-
     };
     
     fetchData();
-  }, [loadGames, currentGenre, currentPage, searchParams, initialLoad]);
+  }, [loadGames, currentGenre, currentPage]);
 
   const handleRemoveFromCart = (game: Game) => {
     deleteGame(game.id);
@@ -64,8 +70,7 @@ const Home = () => {
   };
 
   const handleSelectGenre = (genre: string) => {
-    setCurrentGenre(genre);
-    setCurrentPage(1);
+    setFilters(genre, 1);
     const newUrl = urlFormatter({ currentRoute: window.location.search, page: 1, genre });
     router.replace(newUrl);
   }

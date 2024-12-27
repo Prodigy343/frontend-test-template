@@ -3,6 +3,7 @@ import { MainHeader } from "@/components/header/MainHeader";
 import { MainFooter } from "@/components/footer/MainFooter";
 import type { Metadata } from "next";
 import "./globals.css";
+import { Suspense } from "react";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -20,6 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <Suspense>
     <html lang="en">
       <body className={`${archivo.variable}`}>
         <MainHeader/>
@@ -27,5 +29,6 @@ export default function RootLayout({
         <MainFooter/>
       </body>
     </html>
+    </Suspense>
   );
 }

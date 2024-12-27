@@ -36,12 +36,12 @@ const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description
       </div>
 
       <div className="flex-1 h-full flex flex-col">
-        <p className="text-xs text-gray-500 uppercase">{genre}</p>
-        <h3 className="text-sm font-semibold text-gray-900">{name}</h3>
+        <p className="text-base text-gray-500 uppercase">{genre}</p>
+        <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
         {description && (
-          <p className="text-xs text-gray-500">{description}</p>
+          <p className="text-base text-gray-500">{description}</p>
         )}
-        <p className="mt-auto text-sm font-semibold text-gray-900 text-right">${price}</p>
+        <p className="mt-auto text-lg font-semibold text-gray-900 text-right">${price}</p>
       </div>
 
       <div className="flex hidden md:flex flex-col items-end h-full">

@@ -2,8 +2,6 @@ import { Game } from "@/types/games";
 import Image from "next/image";
 import { FC } from "react";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL || "http://localhost:3000";
-
 interface GameCardProps {
   game: Game;
   onAddToCart: (game: Game) => void;
@@ -14,7 +12,7 @@ const GameCard: FC<GameCardProps> = ({ game, onAddToCart }) => {
     <div className="w-[327px] lg:w-[380px] bg-white rounded-[16px] overflow-hidden border p-[24px]">
       <div className="border border-0 relative overflow-hidden w-full h-[240px] rounded-[16px] rounded-b-none">
         <Image
-          src={BASE_URL + game.image}
+          src={game.image}
           alt={game.name}
           fill
           className="object-cover"

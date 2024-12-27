@@ -34,7 +34,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       let filter = filterFormatter(Array.from(searchParams.entries()));
-      
+
       if(!firstLoad && window.location.search.length > 0){
         setFirstLoad(true);
         await initialLoad(filter.genre, filter.page);
@@ -43,9 +43,16 @@ const Home = () => {
         router.replace(newUrl);
         setFirstLoad(true);
         await initialLoad(currentGenre, currentPage);
-      } else if(filter.genre !== currentGenre || filter.page !== currentPage) {
+      } else if((filter.genre !== currentGenre || filter.page !== currentPage) && currentPage <= totalPages) {
         setFirstLoad(true);
         await loadGames(currentGenre, currentPage, currentPage !== 1);
+      } else if(filter.genre !== currentGenre || filter.page !== currentPage){
+        const newUrl = urlFormatter({ 
+          currentRoute: window.location.search, 
+          page: currentPage, 
+          genre:  currentGenre
+        });
+        router.replace(newUrl);
       }
     };
     

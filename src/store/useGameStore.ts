@@ -46,11 +46,10 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         allGames = [...allGames, ...response.games];
       }
 
-
       set((state) => ({
         games: allGames,
         availableFilters: [allFilter, ...response.availableFilters],
-        currentGenre: genre,
+        currentGenre: currentGenre === '' ? allFilter : currentGenre,
         currentPage: i > response.totalPages ? response.totalPages : page,
         totalPages: response.totalPages,
       }));

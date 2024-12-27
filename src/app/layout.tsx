@@ -21,14 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Suspense>
     <html lang="en">
       <body className={`${archivo.variable}`}>
         <MainHeader/>
-        {children}
+          <Suspense>
+            {children}
+          </Suspense>
         <MainFooter/>
       </body>
     </html>
-    </Suspense>
   );
 }

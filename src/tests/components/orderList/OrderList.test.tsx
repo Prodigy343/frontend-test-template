@@ -20,7 +20,7 @@ describe("OrderList Component", () => {
       expect(screen.getByText(`$${game.price.toFixed(2)}`)).toBeInTheDocument();
     });
 
-    const gameItems = screen.getAllByRole("button", { name: /remove item/i });
+    const gameItems = screen.getAllByRole("button", { name: /^remove item$/i });
     expect(gameItems).toHaveLength(mockGames.length);
   });
 
@@ -28,7 +28,7 @@ describe("OrderList Component", () => {
     const user = userEvent.setup();
     render(<OrderList games={mockGames} handleRemove={mockHandleRemove} />);
 
-    const removeButtons = screen.getAllByRole("button", { name: /remove item/i });
+    const removeButtons = screen.getAllByRole("button", { name: /^remove item$/i });
     await user.click(removeButtons[0]);
 
     expect(mockHandleRemove).toHaveBeenCalledTimes(1);
@@ -38,7 +38,7 @@ describe("OrderList Component", () => {
   it("renders correctly with an empty games list", () => {
     render(<OrderList games={[]} handleRemove={mockHandleRemove} />);
 
-    const gameItems = screen.queryAllByRole("button", { name: /remove item/i });
+    const gameItems = screen.queryAllByRole("button", { name: /^remove item$/i });
     expect(gameItems).toHaveLength(0);
 
     expect(screen.queryByText(/no games found/i)).not.toBeInTheDocument();

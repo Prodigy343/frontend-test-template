@@ -19,7 +19,7 @@ describe("OrderListItem Component", () => {
     expect(screen.getByText(gameMock.description)).toBeInTheDocument();
     expect(screen.getByText(`$${gameMock.price.toFixed(2)}`)).toBeInTheDocument();
 
-    const removeButton = screen.getByRole("button", { name: /remove item/i });
+    const removeButton = screen.getByRole("button", { name: /^remove item$/i });
     expect(removeButton).toBeInTheDocument();
   });
 
@@ -27,7 +27,7 @@ describe("OrderListItem Component", () => {
     const user = userEvent.setup();
     render(<OrderListItem {...gameMock} onRemove={mockOnRemove}/>);
 
-    const removeButton = screen.getByRole("button", { name: /remove item/i });
+    const removeButton = screen.getByRole("button", { name: /^remove item$/i });
     await user.click(removeButton);
 
     expect(mockOnRemove).toHaveBeenCalledTimes(1);

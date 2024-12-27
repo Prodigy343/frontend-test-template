@@ -7,7 +7,7 @@ interface OrderListItemProps {
   name: string;
   description?: string;
   price: number;
-  last: boolean;
+  last?: boolean;
   onRemove: () => void;
 }
 
@@ -28,7 +28,7 @@ const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description
           <button
             onClick={onRemove}
             className="text-gray-400 hover:text-red-500 text-2xl"
-            aria-label="Remove item"
+            aria-label="Remove item mobile"
           >
             &times;
           </button>

@@ -34,7 +34,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ games }) => {
         </div>
       </div>
 
-      <button className="w-full py-5 bg-soft-gray text-white text-sm font-medium rounded-[8px] hover:bg-gray-800">
+      <button className="flex justify-center w-full py-4 md:py-5 mb-6 bg-soft-gray text-white text-sm font-medium rounded-[8px] hover:bg-gray-800 mx-auto max-w-[330px] md:max-w-[initial]">
         Checkout
       </button>
     </>

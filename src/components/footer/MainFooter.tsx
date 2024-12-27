@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const MainFooter = () => {
   return (
-    <footer className="bg-gray-800 flex">
+    <footer className="bg-dark-gray flex">
       <Link href="/" className="flex m-auto py-16">
         <Image
           src="/images/apply-logo.svg"

@@ -4,7 +4,7 @@ import Image from "next/image";
 export const MainHeader = () => {
   return (
     <header className="bg-light-beige">
-      <div className="flex items-center justify-between py-6 max-w-[1280px] mx-auto">
+      <div className="flex items-center justify-between py-6 max-w-[1280px] mx-auto px-3">
         <Link href="/" className="text-dark-gray font-archivo text-xl font-normal leading-[24px] tracking-[0.4px] no-underline">
           GamerShop
         </Link>

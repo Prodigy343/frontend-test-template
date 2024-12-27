@@ -28,7 +28,7 @@ const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description
         {description && (
           <p className="text-xs text-gray-500">{description}</p>
         )}
-        <p className="mt-auto text-sm font-semibold text-gray-900 text-right">{price}</p>
+        <p className="mt-auto text-sm font-semibold text-gray-900 text-right">${price}</p>
       </div>
 
       <div className="flex flex-col items-end h-full">

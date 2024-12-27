@@ -6,6 +6,7 @@ import GameList from "@/components/gameList";
 import { Game } from "@/types/games";
 import { useGameStore } from "@/store/useGameStore";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/loading";
 
 const Home: React.FC = () => {
   const { loadGames, loading, currentGenre, setCurrentPage, currentPage, games, error } = useGameStore();
@@ -32,9 +33,9 @@ const Home: React.FC = () => {
     <div className="max-w-[1280px] mx-auto">
       <h1>Game Store</h1>
 
-      {loading && <p>Loading games...</p>}
+      {!loading && <Loading color="blue-500" />}
       {error && <p style={{ color: "red" }}>{error.message}</p>}
-      {!loading && !error && 
+      {loading && !error && 
         <>
           <GameList games={games} onAddToCart={handleAddToCart}/>
           {

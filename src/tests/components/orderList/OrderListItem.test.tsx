@@ -17,7 +17,7 @@ describe("OrderListItem Component", () => {
     expect(screen.getByText(gameMock.genre)).toBeInTheDocument();
     expect(screen.getByText(gameMock.name)).toBeInTheDocument();
     expect(screen.getByText(gameMock.description)).toBeInTheDocument();
-    expect(screen.getByText(gameMock.price.toFixed(2))).toBeInTheDocument();
+    expect(screen.getByText(`$${gameMock.price.toFixed(2)}`)).toBeInTheDocument();
 
     const removeButton = screen.getByRole("button", { name: /remove item/i });
     expect(removeButton).toBeInTheDocument();

@@ -21,7 +21,6 @@ const config: Config = {
       },
       colors: {
         "soft-gray": "#585660",
-        "dark-gray-font": "#585660",
         "dark-gray": "#404040",
         "light-beige": "#EEEEEE",
         "light-white": "#EFEDF3",

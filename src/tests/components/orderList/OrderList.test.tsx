@@ -17,7 +17,7 @@ describe("OrderList Component", () => {
       expect(screen.getByText(game.name)).toBeInTheDocument();
       expect(screen.getByText(game.genre)).toBeInTheDocument();
       expect(screen.getByText(game.description!)).toBeInTheDocument();
-      expect(screen.getByText(game.price.toFixed(2))).toBeInTheDocument();
+      expect(screen.getByText(`$${game.price.toFixed(2)}`)).toBeInTheDocument();
     });
 
     const gameItems = screen.getAllByRole("button", { name: /remove item/i });

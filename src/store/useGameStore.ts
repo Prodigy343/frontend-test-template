@@ -1,17 +1,19 @@
 import { create } from "zustand";
 import { fetchGames } from "@/services/gamesService";
-import { Game } from "@/types/games";
+import { Game, GamesResponse } from "@/types/games";
 import { AppError } from "@/types/common";
 import { handleError } from "@/utils/handleError";
+import { allFilter } from "@/static/filters";
 
 interface GameStoreState {
   games: Game[];
   availableFilters: string[];
-  currentGenre: string | null;
+  currentGenre: string;
   currentPage: number;
   totalPages: number;
   loading: boolean;
   error: AppError | null;
+  initialLoad: (genre?: string, page?: number) => Promise<void>;
   loadGames: (genre?: string, page?: number, append?: boolean) => Promise<void>;
   setCurrentGenre: (genre: string) => void;
   setCurrentPage: (page: number) => void;
@@ -19,24 +21,59 @@ interface GameStoreState {
 
 export const useGameStore = create<GameStoreState>((set, get) => ({
   games: [],
-  availableFilters: [],
-  currentGenre: null,
+  availableFilters: [allFilter],
+  currentGenre: allFilter,
   currentPage: 1,
   totalPages: 1,
   loading: false,
   error: null,
 
+  initialLoad: async (genre = '', page = 1) => {
+    set({ loading: true, error: null });
+
+    try {
+      let allGames: Game[] = [];
+      let response: GamesResponse;
+      let currentGenre: string = genre;
+
+      if(currentGenre === allFilter) currentGenre = '';
+
+      for(let i=1 ; i<=page ; i++){
+        console.log('it: ', i, page)
+        response = await fetchGames(currentGenre, i);
+        if(i > response.totalPages)break;
+        allGames = [...allGames, ...response.games];
+      }
+
+      console.log('todo bien creo')
+
+      set((state) => ({
+        games: allGames,
+        availableFilters: [allFilter, ...response.availableFilters],
+        currentGenre: genre,
+        currentPage: page,
+        totalPages: response.totalPages,
+      }));
+    } catch (err) {
+      const appError = handleError(err);
+      set({ error: appError });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   loadGames: async (genre, page = 1, append = false) => {
     set({ loading: true, error: null });
 
     try {
-      const currentGenre = genre || (get().currentGenre ?? undefined);
+      let currentGenre = genre || (get().currentGenre ?? undefined);
+      if(currentGenre === allFilter) currentGenre = '';
       const response = await fetchGames(currentGenre, page);
 
       set((state) => ({
         games: append ? [...state.games, ...response.games] : response.games,
-        availableFilters: response.availableFilters,
-        currentGenre: currentGenre || state.currentGenre,
+        availableFilters: [allFilter, ...response.availableFilters],
+        currentGenre: currentGenre === '' ? allFilter : currentGenre,
         currentPage: page,
         totalPages: response.totalPages,
       }));

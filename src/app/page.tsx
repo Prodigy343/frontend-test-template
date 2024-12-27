@@ -1,21 +1,50 @@
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import GameList from "@/components/gameList";
 import { Game } from "@/types/games";
 import { useGameStore } from "@/store/useGameStore";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@/components/loading";
+import { FilterDropdown } from "@/components/filterDropdown";
+import { filterFormatter, urlFormatter } from "@/utils/urlFormatter";
 
-const Home: React.FC = () => {
-  const { loadGames, loading, currentGenre, setCurrentPage, currentPage, games, error } = useGameStore();
+const Home = () => {
+  const { 
+    initialLoad,
+    loadGames, 
+    loading, 
+    currentGenre, 
+    availableFilters, 
+    setCurrentGenre, 
+    setCurrentPage, 
+    currentPage, 
+    totalPages,
+    games, 
+    error
+  } = useGameStore();
   const { addGame } = useCartStore();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [firstLoad, setFirstLoad] = useState<boolean>(false);
 
   useEffect(() => {
-    loadGames();
-  }, [loadGames])
+    const fetchData = async () => {
+      const filter = filterFormatter(Array.from(searchParams.entries()));
+
+      if (!firstLoad && (filter.page !== 0 || filter.genre !== "")) {
+        setFirstLoad(true);
+        await initialLoad(filter.genre, filter.page);
+      } else if (filter.genre !== currentGenre || filter.page !== currentPage) {
+        setFirstLoad(true);
+        await loadGames(currentGenre, currentPage, currentPage !== 1);
+      }
+
+    };
+    
+    fetchData();
+  }, [loadGames, currentGenre, currentPage, searchParams, initialLoad]);
 
   const handleAddToCart = (game: Game) => {
     addGame(game);
@@ -23,30 +52,39 @@ const Home: React.FC = () => {
 
   const handleLoadMore = () => {
     const nextPage = currentPage + 1;
-    setCurrentPage(nextPage);
-    loadGames(currentGenre ?? undefined, nextPage, true);
-    router.replace(`?page=${nextPage}`);
+    if(nextPage <= totalPages){
+      setCurrentPage(nextPage);
+      const newUrl = urlFormatter({ currentRoute: window.location.search, page: nextPage, genre: currentGenre });
+      router.replace(newUrl);
+    }
   };
 
+  const handleSelectGenre = (genre: string) => {
+    setCurrentGenre(genre);
+    setCurrentPage(1);
+    console.log(window.location.search)
+    const newUrl = urlFormatter({ currentRoute: window.location.search, page: 1, genre });
+    router.replace(newUrl);
+  }
 
   return (
     <div className="max-w-[1280px] mx-auto px-3">
       <h1 className="text-2xl md:text-3xl font-bold py-12">Top Sellers</h1>
-
       {loading && <Loading color="blue-500" />}
       {error && <p style={{ color: "red" }}>{error.message}</p>}
+      {!loading && <FilterDropdown selectedOption={currentGenre} options={availableFilters} setSelectedOption={handleSelectGenre} />}
       {!loading && !error && 
         <>
           <GameList games={games} onAddToCart={handleAddToCart}/>
           {
-            <div className="flex justify-center sm:justify-start">
+            currentPage < totalPages && (<div className="flex justify-center sm:justify-start">
               <button
                 className="w-full max-w-[327px] sm:w-auto sm:max-w-none cursor-pointer font-sans font-semibold text-white bg-soft-gray rounded-lg px-6 py-5 mb-12"
                 onClick={handleLoadMore}
               >
                 SEE MORE
               </button>
-            </div>
+            </div>)
           }
         </>
       }

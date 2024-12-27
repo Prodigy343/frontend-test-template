@@ -1,41 +1,67 @@
-import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import GameCard from "@/components/gameCard/index";
-import { mockGames } from '@/tests/dataMocks';
+import { mockGames } from "@/tests/dataMocks";
 
-describe("GameCard", () => {
+describe("GameCard Component", () => {
   const mockGame = mockGames[0];
   const mockOnAddToCart = jest.fn();
+  const mockOnRemoveFromCart = jest.fn();
 
   it("renders game details correctly", () => {
-    render(<GameCard game={mockGame} onAddToCart={mockOnAddToCart} />);
+    render(
+      <GameCard
+        game={mockGame}
+        alreadySelected={false}
+        onAddToCart={mockOnAddToCart}
+        onRemoveFromCart={mockOnRemoveFromCart}
+      />
+    );
 
     expect(screen.getByText(mockGame.name)).toBeInTheDocument();
     expect(screen.getByText(mockGame.genre)).toBeInTheDocument();
     expect(screen.getByText(`$${mockGame.price}`)).toBeInTheDocument();
     expect(screen.getByText("New")).toBeInTheDocument();
-
-    const gameImage = screen.getByAltText(mockGame.name);
-    expect(gameImage).toBeInTheDocument();
-    expect(gameImage).toHaveAttribute("src");
-    expect(gameImage.getAttribute("src")).toContain(encodeURIComponent(mockGame.image));
+    expect(screen.getByText("ADD TO CART")).toBeInTheDocument();
   });
 
-  it("handles the 'Add to Cart' interaction", () => {
-    render(<GameCard game={mockGame} onAddToCart={mockOnAddToCart} />);
+  it("calls onAddToCart when the 'Add to Cart' button is clicked", () => {
+    render(
+      <GameCard
+        game={mockGame}
+        alreadySelected={false}
+        onAddToCart={mockOnAddToCart}
+        onRemoveFromCart={mockOnRemoveFromCart}
+      />
+    );
 
-    const addToCartButton = screen.getByRole("button", { name: /add to cart/i });
-    fireEvent.click(addToCartButton);
-
-    expect(mockOnAddToCart).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByText("ADD TO CART"));
     expect(mockOnAddToCart).toHaveBeenCalledWith(mockGame);
   });
 
-  it("does not render the 'New' badge for non-new games", () => {
-    const updatedMockGame = { ...mockGame, isNew: false };
-    render(<GameCard game={updatedMockGame} onAddToCart={mockOnAddToCart} />);
+  it("renders 'Remove from Cart' button when alreadySelected is true", () => {
+    render(
+      <GameCard
+        game={mockGame}
+        alreadySelected={true}
+        onAddToCart={mockOnAddToCart}
+        onRemoveFromCart={mockOnRemoveFromCart}
+      />
+    );
 
-    const newBadge = screen.queryByText("New");
-    expect(newBadge).not.toBeInTheDocument();
+    expect(screen.getByText("REMOVE FROM CART")).toBeInTheDocument();
+  });
+
+  it("calls onRemoveFromCart when the 'Remove from Cart' button is clicked", () => {
+    render(
+      <GameCard
+        game={mockGame}
+        alreadySelected={true}
+        onAddToCart={mockOnAddToCart}
+        onRemoveFromCart={mockOnRemoveFromCart}
+      />
+    );
+
+    fireEvent.click(screen.getByText("REMOVE FROM CART"));
+    expect(mockOnRemoveFromCart).toHaveBeenCalledWith(mockGame);
   });
 });

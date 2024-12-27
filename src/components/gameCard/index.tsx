@@ -4,10 +4,12 @@ import { FC } from "react";
 
 interface GameCardProps {
   game: Game;
+  alreadySelected: boolean;
+  onRemoveFromCart: (game: Game) => void;
   onAddToCart: (game: Game) => void;
 }
 
-const GameCard: FC<GameCardProps> = ({ game, onAddToCart }) => {
+const GameCard: FC<GameCardProps> = ({ game, alreadySelected, onAddToCart, onRemoveFromCart }) => {
   return (
     <div className="w-[327px] lg:w-[380px] bg-white rounded-[16px] overflow-hidden border p-[24px]">
       <div className="border border-0 relative overflow-hidden w-full h-[240px] rounded-[16px] rounded-b-none">
@@ -16,6 +18,7 @@ const GameCard: FC<GameCardProps> = ({ game, onAddToCart }) => {
           alt={game.name}
           fill
           className="object-cover"
+          sizes="327px"
         />
         {game.isNew && 
           <span className="absolute top-3 left-3 bg-white text-black px-3 py-2 rounded-[4px] text-base font-light font-archivo leading-[initial]">
@@ -31,12 +34,20 @@ const GameCard: FC<GameCardProps> = ({ game, onAddToCart }) => {
           </h2>
           <p className="text-xl font-bold text-gray-800">${game.price}</p>
         </div>
-        <button
-          onClick={() => onAddToCart(game)}
-          className="bg-white border border-light-black rounded-lg light-black w-full p-4 mt-[20px]"
-        >
-          ADD TO CART
-        </button>
+        {alreadySelected ?
+          <button
+            onClick={() => onRemoveFromCart(game)}
+            className="bg-white border border-light-red rounded-lg light-black w-full p-4 mt-[20px]"
+          >
+            REMOVE FROM CART
+          </button>:
+          <button
+            onClick={() => onAddToCart(game)}
+            className="bg-white border border-light-black rounded-lg light-black w-full p-4 mt-[20px]"
+          >
+            ADD TO CART
+          </button>
+        }
       </div>
     </div>
   );

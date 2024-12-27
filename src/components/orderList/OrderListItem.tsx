@@ -21,6 +21,7 @@ const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description
             alt={name}
             fill
             className="object-cover"
+            sizes="327px"
           />
         </div>
 

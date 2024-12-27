@@ -12,7 +12,10 @@ const Cart = () => {
 
   return (<div className="max-w-[450px] md:max-w-[1280px] mx-auto min-h-[calc(100vh-175px-72px)] px-3">
     <div className="flex flex-col w-full">
-      <div className="cursor-pointer w-full flex text-sm pt-4 md:pt-6" onClick={() => push('/')}>
+      <div 
+        className="cursor-pointer w-full flex text-sm pt-4 md:pt-6" 
+        onClick={() => push('/')}
+      >
           <Image
             src="/images/arrow-left.svg"
             alt="arrow left"

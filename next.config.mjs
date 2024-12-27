@@ -12,7 +12,6 @@ const nextConfig = {
   },
   "plugins": ["jest"],
   "extends": ["plugin:jest/recommended"],
-  reactStrictMode: false
 };
 
 export default nextConfig;

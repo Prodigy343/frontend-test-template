@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import GameList from "@/components/gameList";
 import { Game } from "@/types/games";
@@ -24,7 +24,7 @@ const Home = () => {
     games, 
     error
   } = useGameStore();
-  const { addGame } = useCartStore();
+  const { addGame, deleteGame, cart } = useCartStore();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [firstLoad, setFirstLoad] = useState<boolean>(false);
@@ -46,6 +46,10 @@ const Home = () => {
     fetchData();
   }, [loadGames, currentGenre, currentPage, searchParams, initialLoad]);
 
+  const handleRemoveFromCart = (game: Game) => {
+    deleteGame(game.id);
+  }
+
   const handleAddToCart = (game: Game) => {
     addGame(game);
   };
@@ -62,10 +66,17 @@ const Home = () => {
   const handleSelectGenre = (genre: string) => {
     setCurrentGenre(genre);
     setCurrentPage(1);
-    console.log(window.location.search)
     const newUrl = urlFormatter({ currentRoute: window.location.search, page: 1, genre });
     router.replace(newUrl);
   }
+
+  const cartMap: Map<string, boolean> = useMemo(() => {
+    const map = new Map();
+    cart.forEach((game) => {
+      map.set(game.id, true)
+    })
+    return map;
+  }, [cart])
 
   return (
     <div className="max-w-[1280px] mx-auto px-3">
@@ -75,7 +86,7 @@ const Home = () => {
       {!loading && <FilterDropdown selectedOption={currentGenre} options={availableFilters} setSelectedOption={handleSelectGenre} />}
       {!loading && !error && 
         <>
-          <GameList games={games} onAddToCart={handleAddToCart}/>
+          <GameList cartMap={cartMap} games={games} onRemoveFromCart={handleRemoveFromCart} onAddToCart={handleAddToCart}/>
           {
             currentPage < totalPages && (<div className="flex justify-center sm:justify-start">
               <button

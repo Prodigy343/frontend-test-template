@@ -39,13 +39,11 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
       if(currentGenre === allFilter) currentGenre = '';
 
       for(let i=1 ; i<=page ; i++){
-        console.log('it: ', i, page)
         response = await fetchGames(currentGenre, i);
         if(i > response.totalPages)break;
         allGames = [...allGames, ...response.games];
       }
 
-      console.log('todo bien creo')
 
       set((state) => ({
         games: allGames,

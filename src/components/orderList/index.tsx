@@ -17,6 +17,7 @@ const OrderList: FC<OrderListProps> = ({ games, handleRemove }) => {
       description={game.description}
       price={game.price}
       onRemove={() => handleRemove(game.id)}
+      last={index === games.length-1}
     />
   ));
 };

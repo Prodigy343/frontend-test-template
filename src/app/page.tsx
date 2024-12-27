@@ -33,9 +33,9 @@ const Home: React.FC = () => {
     <div className="max-w-[1280px] mx-auto">
       <h1>Game Store</h1>
 
-      {!loading && <Loading color="blue-500" />}
+      {loading && <Loading color="blue-500" />}
       {error && <p style={{ color: "red" }}>{error.message}</p>}
-      {loading && !error && 
+      {!loading && !error && 
         <>
           <GameList games={games} onAddToCart={handleAddToCart}/>
           {

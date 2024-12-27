@@ -7,19 +7,32 @@ interface OrderListItemProps {
   name: string;
   description?: string;
   price: number;
+  last: boolean;
   onRemove: () => void;
 }
 
-const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description, price, onRemove }) => {
+const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description, price, last = false, onRemove }) => {
   return (
-    <div className="flex items-start gap-4 border-b border-gray-200 px-4 py-5 h-[196px]">
-      <div className="border border-0 relative overflow-hidden h-[156px] w-[37%]">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className="object-cover"
-        />
+    <div className={"flex flex-col md:flex-row items-start gap-4 px-4 py-5 h-[331px] md:h-[196px] " + (!last ? "border-b border-gray-200" : "")}>
+      <div className="flex flex-row h-[156px] w-full md:w-[37%]">
+        <div className="flex-[0.85] md:flex-1 border border-0 relative overflow-hidden">
+          <Image
+            src={image}
+            alt={name}
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        <div className="flex-[0.15] flex items-baseline justify-center md:hidden">
+          <button
+            onClick={onRemove}
+            className="text-gray-400 hover:text-red-500 text-2xl"
+            aria-label="Remove item"
+          >
+            &times;
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 h-full flex flex-col">
@@ -31,7 +44,7 @@ const OrderListItem: FC<OrderListItemProps> = ({ image, genre, name, description
         <p className="mt-auto text-sm font-semibold text-gray-900 text-right">${price}</p>
       </div>
 
-      <div className="flex flex-col items-end h-full">
+      <div className="flex hidden md:flex flex-col items-end h-full">
         <button
           onClick={onRemove}
           className="text-gray-400 hover:text-red-500 text-2xl"

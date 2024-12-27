@@ -10,7 +10,7 @@ const Cart: React.FC = () => {
   const {cart, deleteGame} = useCartStore();
   const { push } = useRouter();
 
-  return (<div className="max-w-[1280px] mx-auto min-h-[calc(100vh-175px-72px)] px-3">
+  return (<div className="max-w-[450px] md:max-w-[1280px] mx-auto min-h-[calc(100vh-175px-72px)] px-3">
     <div className="flex flex-col w-full">
       <div className="w-full flex text-sm pt-4 md:pt-6" onClick={() => push('/')}>
           <Image
